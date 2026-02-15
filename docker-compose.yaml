@@ -3,13 +3,13 @@ version: '3.8'
 services:
   postgres:
     image: postgres:17-alpine
-    container_name: university_db  # Уникальное имя для этого проекта
+    container_name: university_db
     ports:
       - "5432:5432"
     env_file:
       - .env
     volumes:
-      - university_pgdata:/var/lib/postgresql/data # Уникальный том для данных
+      - university_pgdata:/var/lib/postgresql/data
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U $${POSTGRES_USER}" ]
       interval: 10s
