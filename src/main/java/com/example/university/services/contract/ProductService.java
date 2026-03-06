@@ -1,8 +1,8 @@
 package com.example.university.services.contract;
 
 import com.example.university.models.Product;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface ProductService {
 
@@ -10,15 +10,15 @@ public interface ProductService {
 
     Product findProduct(Long id);
 
-    List<Product> getAllProducts();
+    Page<Product> getAllProducts(Pageable pageable);
 
     Product updateProduct(Long id, Product product);
 
     void deleteProduct(Long id);
 
-    List<Product> getProductsByPriceGreaterThan(Double price);
+    Page<Product> getProductsByPriceGreaterThan(Double price, Pageable pageable);
 
-    List<Product> searchByName(String name);
+    Page<Product> searchByName(String name, Pageable pageable);
 
-    List<Product> filterByPriceRange(Double minPrice, Double maxPrice);
+    Page<Product> filterByPriceRange(Double minPrice, Double maxPrice, Pageable pageable);
 }

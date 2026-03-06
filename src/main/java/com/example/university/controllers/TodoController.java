@@ -5,11 +5,12 @@ import com.example.university.models.Todo;
 import com.example.university.services.contract.TodoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/todos")
@@ -32,13 +33,15 @@ public class TodoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Todo>> getAllTodos() {
-        return ResponseEntity.ok(todoService.getAllTodos());
+    public ResponseEntity<Page<Todo>> getAllTodos(
+            @PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return ResponseEntity.ok(todoService.getAllTodos(pageable));
     }
 
     @GetMapping("/completed")
-    public ResponseEntity<List<Todo>> getCompletedTodos() {
-        return ResponseEntity.ok(todoService.getCompletedTodos());
+    public ResponseEntity<Page<Todo>> getCompletedTodos(
+            @PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return ResponseEntity.ok(todoService.getCompletedTodos(pageable));
     }
 
     @PutMapping("/{id}")

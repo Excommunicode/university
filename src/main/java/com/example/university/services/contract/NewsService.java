@@ -1,8 +1,8 @@
 package com.example.university.services.contract;
 
 import com.example.university.models.News;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface NewsService {
 
@@ -10,11 +10,11 @@ public interface NewsService {
 
     News findNews(Long id);
 
-    List<News> getAllNews();
+    Page<News> getAllNews(Pageable pageable);
 
     News updateNews(Long id, News news);
 
     void deleteNews(Long id);
 
-    List<News> getPublishedNews();
+    Page<News> getPublishedNews(Pageable pageable);
 }

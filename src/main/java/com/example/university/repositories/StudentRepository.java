@@ -4,8 +4,13 @@ import com.example.university.models.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
-    List<Student> findByCourse(Integer course);
+    boolean existsByEmail(String email);
+
+    boolean existsByEmailAndIdNot(String email, Long id);
+
+    Optional<Student> findByEmail(String email);
 }

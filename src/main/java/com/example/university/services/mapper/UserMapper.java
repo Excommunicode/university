@@ -1,6 +1,6 @@
 package com.example.university.services.mapper;
 
-import com.example.university.dto.UserCreateDto;
+import com.example.university.dto.UserRegistrationDto;
 import com.example.university.dto.UserResponseDto;
 import com.example.university.models.User;
 import org.springframework.stereotype.Component;
@@ -17,18 +17,21 @@ public class UserMapper {
         }
         return new UserResponseDto(
                 user.getId(),
-                user.getName(),
-                user.getEmail()
+                user.getUsername(),
+                user.getEmail(),
+                user.getAge()
         );
     }
 
-    public User toEntity(UserCreateDto dto) {
+    public User toEntity(UserRegistrationDto dto) {
         if (dto == null) {
             return null;
         }
         User user = new User();
-        user.setName(dto.getName());
+        user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());
+        user.setPassword(dto.getPassword());
+        user.setAge(dto.getAge());
         return user;
     }
 

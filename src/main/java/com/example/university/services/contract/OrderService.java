@@ -1,8 +1,8 @@
 package com.example.university.services.contract;
 
 import com.example.university.models.Order;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface OrderService {
 
@@ -10,7 +10,7 @@ public interface OrderService {
 
     Order findOrder(Long id);
 
-    List<Order> getAllOrders();
+    Page<Order> getAllOrders(Pageable pageable);
 
     Order updateOrder(Long id, Order order);
 
@@ -18,5 +18,5 @@ public interface OrderService {
 
     Order updateStatus(Long id, String status);
 
-    List<Order> getOrdersByStatus(String status);
+    Page<Order> getOrdersByStatus(String status, Pageable pageable);
 }

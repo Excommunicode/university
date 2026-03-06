@@ -1,8 +1,8 @@
 package com.example.university.services.contract;
 
 import com.example.university.models.Course;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CourseService {
 
@@ -10,7 +10,7 @@ public interface CourseService {
 
     Course findCourse(Long id);
 
-    List<Course> getAllCourses();
+    Page<Course> getAllCourses(Pageable pageable);
 
     Course updateCourse(Long id, Course course);
 

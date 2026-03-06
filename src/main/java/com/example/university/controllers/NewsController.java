@@ -5,11 +5,12 @@ import com.example.university.models.News;
 import com.example.university.services.contract.NewsService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/news")
@@ -33,13 +34,15 @@ public class NewsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<News>> getAllNews() {
-        return ResponseEntity.ok(newsService.getAllNews());
+    public ResponseEntity<Page<News>> getAllNews(
+            @PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return ResponseEntity.ok(newsService.getAllNews(pageable));
     }
 
     @GetMapping("/published")
-    public ResponseEntity<List<News>> getPublishedNews() {
-        return ResponseEntity.ok(newsService.getPublishedNews());
+    public ResponseEntity<Page<News>> getPublishedNews(
+            @PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return ResponseEntity.ok(newsService.getPublishedNews(pageable));
     }
 
     @PutMapping("/{id}")

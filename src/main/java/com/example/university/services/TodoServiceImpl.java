@@ -5,10 +5,10 @@ import com.example.university.models.Todo;
 import com.example.university.repositories.TodoRepository;
 import com.example.university.services.contract.TodoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +30,8 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public List<Todo> getAllTodos() {
-        return todoRepository.findAll();
+    public Page<Todo> getAllTodos(Pageable pageable) {
+        return todoRepository.findAll(pageable);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public List<Todo> getCompletedTodos() {
-        return todoRepository.findByCompletedTrue();
+    public Page<Todo> getCompletedTodos(Pageable pageable) {
+        return todoRepository.findByCompletedTrue(pageable);
     }
 }

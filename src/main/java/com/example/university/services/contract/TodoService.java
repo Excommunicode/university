@@ -1,8 +1,8 @@
 package com.example.university.services.contract;
 
 import com.example.university.models.Todo;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface TodoService {
 
@@ -10,11 +10,11 @@ public interface TodoService {
 
     Todo findTodo(Long id);
 
-    List<Todo> getAllTodos();
+    Page<Todo> getAllTodos(Pageable pageable);
 
     Todo updateTodo(Long id, Todo todo);
 
     void deleteTodo(Long id);
 
-    List<Todo> getCompletedTodos();
+    Page<Todo> getCompletedTodos(Pageable pageable);
 }

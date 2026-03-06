@@ -5,11 +5,12 @@ import com.example.university.models.Course;
 import com.example.university.services.contract.CourseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/courses")
@@ -32,8 +33,10 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses() {
-        return ResponseEntity.ok(courseService.getAllCourses());
+    @ResponseStatus(HttpStatus.OK)
+    public Page<Course> getAllCourses(
+            @PageableDefault(size = 20, sort = "id") Pageable pageable) {
+        return courseService.getAllCourses(pageable);
     }
 
     @PutMapping("/{id}")

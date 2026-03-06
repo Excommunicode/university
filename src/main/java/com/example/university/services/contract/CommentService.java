@@ -1,8 +1,8 @@
 package com.example.university.services.contract;
 
 import com.example.university.models.Comment;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CommentService {
 
@@ -10,7 +10,7 @@ public interface CommentService {
 
     Comment findComment(Long id);
 
-    List<Comment> getAllComments();
+    Page<Comment> getAllComments(Pageable pageable);
 
     Comment updateCommentText(Long id, String text);
 

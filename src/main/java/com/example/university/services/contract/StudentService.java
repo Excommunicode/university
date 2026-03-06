@@ -1,20 +1,20 @@
 package com.example.university.services.contract;
 
-import com.example.university.models.Student;
-
-import java.util.List;
+import com.example.university.dto.StudentCreateDto;
+import com.example.university.dto.StudentResponseDto;
+import com.example.university.dto.StudentUpdateDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface StudentService {
 
-    Student createStudent(Student student);
+    StudentResponseDto createStudent(StudentCreateDto dto);
 
-    Student findStudent(Long id);
+    StudentResponseDto findStudent(Long id);
 
-    List<Student> getAllStudents();
+    Page<StudentResponseDto> getAllStudents(Pageable pageable);
 
-    Student updateStudent(Long id, Student student);
+    StudentResponseDto updateStudent(Long id, StudentUpdateDto dto);
 
     void deleteStudent(Long id);
-
-    List<Student> getStudentsByCourse(Integer course);
 }

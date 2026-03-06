@@ -5,10 +5,10 @@ import com.example.university.models.News;
 import com.example.university.repositories.NewsRepository;
 import com.example.university.services.contract.NewsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +30,8 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<News> getAllNews() {
-        return newsRepository.findAll();
+    public Page<News> getAllNews(Pageable pageable) {
+        return newsRepository.findAll(pageable);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class NewsServiceImpl implements NewsService {
     }
 
     @Override
-    public List<News> getPublishedNews() {
-        return newsRepository.findByPublishedTrue();
+    public Page<News> getPublishedNews(Pageable pageable) {
+        return newsRepository.findByPublishedTrue(pageable);
     }
 }

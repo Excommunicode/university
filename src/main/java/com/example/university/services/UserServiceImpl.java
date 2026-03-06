@@ -1,7 +1,9 @@
 package com.example.university.services;
 
-import com.example.university.dto.UserCreateDto;
+import com.example.university.dto.UserRegistrationDto;
 import com.example.university.dto.UserResponseDto;
+import com.example.university.exception.BusinessRuleException;
+import com.example.university.exception.DuplicateEmailException;
 import com.example.university.exception.ResourceNotFoundException;
 import com.example.university.models.User;
 import com.example.university.repositories.UserRepository;
@@ -11,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -24,42 +25,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserResponseDto createUser(UserCreateDto dto) {
+    public UserResponseDto register(UserRegistrationDto dto) {
+        if (userRepository.existsByEmail(dto.getEmail())) {
+            throw new DuplicateEmailException("User", dto.getEmail());
+        }
+        if (userRepository.existsByUsername(dto.getUsername())) {
+            throw new BusinessRuleException("Username '" + dto.getUsername() + "' is already taken");
+        }
         User user = userMapper.toEntity(dto);
-        return userMapper.toResponseDto(userRepository.save(user));
+        User saved = userRepository.save(user);
+        return userMapper.toResponseDto(saved);
     }
 
     @Override
-    public UserResponseDto findUser(UUID userId) {
+    public UserResponseDto findUserById(UUID userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
         return userMapper.toResponseDto(user);
-    }
-
-    @Override
-    @Transactional
-    public UserResponseDto updateUser(UUID userId, UserCreateDto dto) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
-        user.setName(dto.getName());
-        user.setEmail(dto.getEmail());
-        return userMapper.toResponseDto(userRepository.save(user));
-    }
-
-    @Override
-    @Transactional
-    public void deleteUser(UUID userId) {
-        if (!userRepository.existsById(userId)) {
-            throw new ResourceNotFoundException("User not found with id: " + userId);
-        }
-        userRepository.deleteById(userId);
-    }
-
-    @Override
-    public List<UserResponseDto> getAllUsers(String email) {
-        if (email != null && !email.isEmpty()) {
-            return userMapper.toResponseDtoList(userRepository.findUserByEmail(email));
-        }
-        return userMapper.toResponseDtoList(userRepository.findAll());
     }
 }

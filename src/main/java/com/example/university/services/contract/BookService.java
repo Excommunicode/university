@@ -1,8 +1,8 @@
 package com.example.university.services.contract;
 
 import com.example.university.models.Book;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface BookService {
 
@@ -10,11 +10,11 @@ public interface BookService {
 
     Book findBook(Long id);
 
-    List<Book> getAllBooks();
+    Page<Book> getAllBooks(Pageable pageable);
 
     Book updateBook(Long id, Book book);
 
     void deleteBook(Long id);
 
-    List<Book> getBooksByAuthor(String author);
+    Page<Book> getBooksByAuthor(String author, Pageable pageable);
 }
