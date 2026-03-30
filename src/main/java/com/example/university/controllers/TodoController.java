@@ -28,7 +28,7 @@ public class TodoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Todo> findTodo(@PathVariable Long id) {
+    public ResponseEntity<Todo> findTodo(@PathVariable String id) {
         return ResponseEntity.ok(todoService.findTodo(id));
     }
 
@@ -45,7 +45,7 @@ public class TodoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Todo> updateTodo(@PathVariable Long id,
+    public ResponseEntity<Todo> updateTodo(@PathVariable String id,
                                            @Valid @RequestBody TodoCreateDto dto) {
         Todo todo = new Todo();
         todo.setTitle(dto.getTitle());
@@ -54,7 +54,7 @@ public class TodoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTodo(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTodo(@PathVariable String id) {
         todoService.deleteTodo(id);
         return ResponseEntity.noContent().build();
     }

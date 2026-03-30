@@ -8,13 +8,13 @@ public interface TodoService {
 
     Todo createTodo(Todo todo);
 
-    Todo findTodo(Long id);
+    Todo findTodo(String id);
 
     Page<Todo> getAllTodos(Pageable pageable);
 
-    Todo updateTodo(Long id, Todo todo);
+    Todo updateTodo(String id, Todo todo);
 
-    void deleteTodo(Long id);
+    void deleteTodo(String id);
 
     Page<Todo> getCompletedTodos(Pageable pageable);
 }

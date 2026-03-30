@@ -3,11 +3,8 @@ package com.example.university.repositories;
 import com.example.university.models.Todo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 
-@Repository
-public interface TodoRepository extends JpaRepository<Todo, Long> {
-
+public interface TodoRepository extends MongoRepository<Todo, String> {
     Page<Todo> findByCompletedTrue(Pageable pageable);
 }

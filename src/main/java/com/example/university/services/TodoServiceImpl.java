@@ -24,7 +24,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public Todo findTodo(Long id) {
+    public Todo findTodo(String id) {
         return todoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Todo not found with id: " + id));
     }
@@ -36,7 +36,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @Transactional
-    public Todo updateTodo(Long id, Todo todo) {
+    public Todo updateTodo(String id, Todo todo) {
         Todo existing = todoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Todo not found with id: " + id));
         existing.setTitle(todo.getTitle());
@@ -46,7 +46,7 @@ public class TodoServiceImpl implements TodoService {
 
     @Override
     @Transactional
-    public void deleteTodo(Long id) {
+    public void deleteTodo(String id) {
         if (!todoRepository.existsById(id)) {
             throw new ResourceNotFoundException("Todo not found with id: " + id);
         }

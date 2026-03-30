@@ -16,5 +16,16 @@ services:
       timeout: 5s
       retries: 5
 
+  mongo:
+    image: mongo:7.0
+    container_name: university_mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: university_mongo
+    volumes:
+      - university_mongo_data:/data/db
+
 volumes:
   university_pgdata:
+  university_mongo_data:

@@ -1,5 +1,6 @@
 package com.example.university.controllers;
 
+import com.example.university.dto.UserLoginDto;
 import com.example.university.dto.UserRegistrationDto;
 import com.example.university.dto.UserResponseDto;
 import com.example.university.services.contract.UserService;
@@ -22,6 +23,12 @@ public class UserController {
     public ResponseEntity<UserResponseDto> register(@Valid @RequestBody UserRegistrationDto dto) {
         UserResponseDto created = userService.register(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<UserResponseDto> login(@Valid @RequestBody UserLoginDto dto) {
+        UserResponseDto user = userService.login(dto);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/{userId}")
