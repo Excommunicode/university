@@ -8,9 +8,10 @@ import com.example.university.exception.DuplicateEmailException;
 import com.example.university.exception.ResourceNotFoundException;
 import com.example.university.models.User;
 import com.example.university.repositories.UserRepository;
+import com.example.university.security.JwtTokenProvider;
+import com.example.university.services.contract.EmailNotificationService;
 import com.example.university.services.contract.UserService;
 import com.example.university.services.mapper.UserMapper;
-import com.example.university.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final JwtTokenProvider jwtTokenProvider;
+    private final EmailNotificationService emailNotificationService;
 
     @Override
     @Transactional
@@ -44,6 +46,7 @@ public class UserServiceImpl implements UserService {
         UserResponseDto responseDto = userMapper.toResponseDto(saved);
         String token = jwtTokenProvider.generateToken(saved);
         responseDto.setToken(token);
+        emailNotificationService.sendUserWelcomeEmail(saved.getEmail(), saved.getUsername());
         return responseDto;
     }
 

@@ -26,6 +26,14 @@ services:
     volumes:
       - university_mongo_data:/data/db
 
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: university_mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    restart: unless-stopped
+
 volumes:
   university_pgdata:
   university_mongo_data:

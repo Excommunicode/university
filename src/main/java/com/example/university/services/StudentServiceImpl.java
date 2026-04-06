@@ -7,6 +7,7 @@ import com.example.university.exception.DuplicateEmailException;
 import com.example.university.exception.StudentNotFoundException;
 import com.example.university.models.Student;
 import com.example.university.repositories.StudentRepository;
+import com.example.university.services.contract.EmailNotificationService;
 import com.example.university.services.contract.StudentService;
 import com.example.university.services.mapper.StudentMapper;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ public class StudentServiceImpl implements StudentService {
 
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+    private final EmailNotificationService emailNotificationService;
 
     @Override
     @Transactional
@@ -31,6 +33,8 @@ public class StudentServiceImpl implements StudentService {
         }
         Student entity = studentMapper.toEntity(dto);
         Student saved = studentRepository.save(entity);
+        String fullName = saved.getFirstName() + " " + saved.getLastName();
+        emailNotificationService.sendStudentWelcomeEmail(saved.getEmail(), fullName);
         return studentMapper.toResponseDto(saved);
     }
 
