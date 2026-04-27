@@ -26,8 +26,11 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String password;
 
     private Integer age;
+
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    private Student student;
 }

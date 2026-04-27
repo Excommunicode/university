@@ -1,10 +1,14 @@
 package com.example.university.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,4 +25,8 @@ public class Product {
     private String name;
 
     private Double price;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    private List<Order> orders = new ArrayList<>();
 }

@@ -32,6 +32,14 @@ public class Student {
     @Column(nullable = false)
     private Integer age;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", unique = true)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id")
+    private Course course;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
 

@@ -1,13 +1,38 @@
 version: '3.8'
 
 services:
-  postgres:
+  app:
+    build: .
+    container_name: university_app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+      mongo:
+        condition: service_started
+    env_file:
+      - .env
+    healthcheck:
+      test: [ "CMD-SHELL", "wget -q -O - http://localhost:8080/actuator/health | grep -q '\"status\":\"UP\"'" ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  db:
     image: postgres:17-alpine
     container_name: university_db
     ports:
       - "5432:5432"
-    env_file:
-      - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - university_pgdata:/var/lib/postgresql/data
     healthcheck:

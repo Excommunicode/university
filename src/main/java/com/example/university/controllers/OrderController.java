@@ -3,6 +3,7 @@ package com.example.university.controllers;
 import com.example.university.dto.OrderCreateDto;
 import com.example.university.dto.OrderStatusDto;
 import com.example.university.models.Order;
+import com.example.university.models.Product;
 import com.example.university.services.contract.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,11 @@ public class OrderController {
         order.setProductName(dto.getProductName());
         order.setQuantity(dto.getQuantity());
         order.setStatus(dto.getStatus());
+        if (dto.getProductId() != null) {
+            Product product = new Product();
+            product.setId(dto.getProductId());
+            order.setProduct(product);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.createOrder(order));
     }
 
@@ -54,6 +60,11 @@ public class OrderController {
         order.setProductName(dto.getProductName());
         order.setQuantity(dto.getQuantity());
         order.setStatus(dto.getStatus());
+        if (dto.getProductId() != null) {
+            Product product = new Product();
+            product.setId(dto.getProductId());
+            order.setProduct(product);
+        }
         return ResponseEntity.ok(orderService.updateOrder(id, order));
     }
 

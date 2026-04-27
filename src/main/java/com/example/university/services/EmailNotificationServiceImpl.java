@@ -1,15 +1,16 @@
 package com.example.university.services;
 
 import com.example.university.services.contract.EmailNotificationService;
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import jakarta.mail.internet.InternetAddress;
-import jakarta.mail.internet.AddressException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 
 @Service
@@ -28,6 +29,7 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
     @Override
     @Async
     public void sendUserWelcomeEmail(String email, String username) {
+        log.info("sendUserWelcomeEmail called: email='{}', username='{}'", email, username);
         sendEmail(
                 email,
                 "Welcome to University App",
@@ -38,21 +40,34 @@ public class EmailNotificationServiceImpl implements EmailNotificationService {
     @Override
     @Async
     public void sendStudentWelcomeEmail(String email, String fullName) {
+        log.info("sendStudentWelcomeEmail called: email='{}', fullName='{}'", email, fullName);
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
         sendEmail(
                 email,
                 "Student profile created",
                 "Hi " + fullName + ",\n\nYour student profile has been created successfully.\n\nBest regards,\nUniversity Team"
         );
+        stopWatch.stop();
+        log.debug("sendStudentWelcomeEmail executed in {} ms", stopWatch.getTotalTimeMillis());
     }
 
     @Override
     @Async
     public void sendCustomEmail(String email, String message) {
+        log.info("sendCustomEmail called: email='{}', messageLength={}", email, message != null ? message.length() : 0);
+
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
         sendEmail(
                 email,
                 "University notification",
                 message
         );
+        stopWatch.stop();
+        log.debug("sendCustomEmail executed in {} ms", stopWatch.getTotalTimeMillis());
     }
 
     private void sendEmail(String to, String subject, String body) {

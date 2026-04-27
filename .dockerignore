@@ -1,0 +1,7 @@
+.git
+.idea
+.cursor
+build
+out
+node_modules
+*.log

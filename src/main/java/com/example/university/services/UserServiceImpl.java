@@ -13,6 +13,7 @@ import com.example.university.services.contract.EmailNotificationService;
 import com.example.university.services.contract.UserService;
 import com.example.university.services.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserResponseDto register(UserRegistrationDto dto) {
+        log.info("register called: email='{}', username='{}'", dto.getEmail(), dto.getUsername());
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new DuplicateEmailException("User", dto.getEmail());
         }
@@ -52,6 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto findUserById(UUID userId) {
+        log.info("findUserById called: userId={}", userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
         return userMapper.toResponseDto(user);
@@ -59,6 +63,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto login(UserLoginDto dto) {
+        log.info("login called: email='{}'", dto.getEmail());
         User user = userRepository.findByEmail(dto.getEmail())
                 .orElseThrow(() -> new BusinessRuleException("Invalid email or password"));
 

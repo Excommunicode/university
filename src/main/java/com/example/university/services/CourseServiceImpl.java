@@ -6,11 +6,13 @@ import com.example.university.models.Course;
 import com.example.university.repositories.CourseRepository;
 import com.example.university.services.contract.CourseService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -21,23 +23,27 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public Course createCourse(Course course) {
+        log.info("createCourse called: title='{}', duration={}", course.getTitle(), course.getDuration());
         return courseRepository.save(course);
     }
 
     @Override
     public Course findCourse(Long id) {
+        log.info("findCourse called: id={}", id);
         return courseRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + id));
     }
 
     @Override
     public Page<Course> getAllCourses(Pageable pageable) {
+        log.info("getAllCourses called: page={}, size={}", pageable.getPageNumber(), pageable.getPageSize());
         return courseRepository.findAll(pageable);
     }
 
     @Override
     @Transactional
     public Course updateCourse(Long id, Course course) {
+        log.info("updateCourse called: id={}, title='{}'", id, course.getTitle());
         Course existing = courseRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + id));
         existing.setTitle(course.getTitle());
@@ -48,6 +54,7 @@ public class CourseServiceImpl implements CourseService {
     @Override
     @Transactional
     public void deleteCourse(Long id) {
+        log.info("deleteCourse called: id={}", id);
         Course course = courseRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + id));
         if (course.getDuration() != null && course.getDuration() > 40) {

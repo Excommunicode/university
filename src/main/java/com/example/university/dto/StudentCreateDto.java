@@ -27,4 +27,7 @@ public class StudentCreateDto {
     @Min(value = 16, message = "Age must be at least 16")
     @Max(value = 120, message = "Age must not exceed 120")
     private Integer age;
+
+    @Positive(message = "Course id must be positive")
+    private Long courseId;
 }
